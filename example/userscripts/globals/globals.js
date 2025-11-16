@@ -1,4 +1,5 @@
 // oxlint-disable no-unused-vars
+// eslint-disable no-unused-vars
 
 var myGlobal = {
   /**
