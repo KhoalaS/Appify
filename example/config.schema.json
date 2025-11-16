@@ -1,0 +1,51 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "appify-config",
+    "title": "Appify Config",
+    "description": "A configuration for the Appify CLI",
+    "type": "object",
+    "properties": {
+        "appName": {
+            "type": "string",
+            "description": "The name of the app."
+        },
+        "website": {
+            "type": "string",
+            "description": "The website to be appified."
+        },
+        "packageName": {
+            "type": "string",
+            "description": "The package name to be used."
+        },
+        "blockedHosts": {
+            "type": "array",
+            "description": "The hosts from which resources should not be loaded.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "userAgentString": {
+            "type": "string",
+            "description": "The User-Agent string to use."
+        },
+        "sslBypass": {
+            "type": "array",
+            "description": "Hosts for which SSL should be bypassed. Useful if you fetch from your own sites with self sigend certificates.",
+            "items": {
+                "type": "string"
+            }
+        },
+        "onloadScripts": {
+            "type": "string",
+            "description": "Folder with your scripts that should be executed on page load."
+        },
+        "globals": {
+            "type": "string",
+            "description": "File with global object declarations."
+        },
+        "projectDirectory": {
+            "type": "string",
+            "description": "The path to the project directory."
+        }
+    }
+}

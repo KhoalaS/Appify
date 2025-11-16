@@ -1,0 +1,16 @@
+package {{ .PackageName }}.viewmodels
+
+import android.os.Bundle
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
+
+class WebViewModel(
+    private val stateHandle: SavedStateHandle
+) : ViewModel() {
+
+    var webViewState: Bundle?
+        get() = stateHandle.get<Bundle>("web_state")
+        set(value) {
+            stateHandle["web_state"] = value
+        }
+}

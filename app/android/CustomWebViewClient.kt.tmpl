@@ -1,0 +1,129 @@
+package {{ .PackageName }}
+
+import android.content.Context
+import android.net.http.SslError
+import android.webkit.SslErrorHandler
+import android.webkit.WebResourceRequest
+import android.webkit.WebResourceResponse
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import {{ .PackageName }}.provider.OkHttpProvider
+import okhttp3.Request
+import java.io.ByteArrayInputStream
+import java.net.URL
+
+
+class CustomWebViewClient(private val context: Context) : WebViewClient() {
+    private val blockList = listOf({{ .BlockedHosts }})
+    private val userScripts: List<String> by lazy {
+        listOf({{ .OnloadScripts }}).map { script ->
+            context.assets.open(script).bufferedReader().use { it.readText() }
+        }
+    }
+    private val sslBypassHosts = listOf({{ .SslBypass }})
+
+    override fun shouldInterceptRequest(
+        view: WebView?,
+        request: WebResourceRequest
+    ): WebResourceResponse? {
+        if (request.url.host in blockList) {
+            return blockedResponse()
+        }
+
+        if (!request.isForMainFrame)
+            return super.shouldInterceptRequest(view, request)
+
+        // Whitelist headers that are safe to forward
+        val safeHeaders = listOf(
+            "user-agent",
+            "cookie",
+            "accept",
+            "accept-language"
+        )
+
+        // Copy only safe headers
+        val builder = Request.Builder().url(request.url.toString())
+        for ((k, v) in request.requestHeaders) {
+            val key = k.lowercase()
+            if (key in safeHeaders) {
+                builder.addHeader(k, v)
+            }
+        }
+
+        // Ensure a valid UA
+        builder.header(
+            "User-Agent",
+            request.requestHeaders["User-Agent"] ?: view?.settings?.userAgentString
+            ?: "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 Chrome Mobile Safari/537.36"
+        )
+
+        val okRequest = builder.build()
+
+        return try {
+            val response = OkHttpProvider.client.newCall(okRequest).execute()
+
+            val mime = response.body?.contentType()?.type + "/" +
+                    response.body?.contentType()?.subtype
+
+            val encoding =
+                response.header("content-encoding", "utf-8")
+
+            WebResourceResponse(
+                mime,
+                encoding,
+                response.code,
+                response.message,
+                response.headers.toMultimap().mapValues { it.value.joinToString("; ") },
+                response.body?.byteStream()
+            )
+
+        } catch (e: Exception) {
+            null // fall back to default WebView loading
+        }
+    }
+
+
+    private fun blockedResponse() =
+        WebResourceResponse(
+            "text/plain",
+            "utf-8",
+            403,
+            "Forbidden",
+            emptyMap(),
+            ByteArrayInputStream(ByteArray(0))
+        )
+
+    override fun shouldOverrideUrlLoading(
+        view: WebView?,
+        request: WebResourceRequest?
+    ): Boolean { // Always load the URL in this WebView
+        if (request?.isForMainFrame == true) {
+            view?.loadUrl(request.url.toString())
+            return true
+        }
+        return false
+    }
+
+    override fun onReceivedSslError(
+        view: WebView?,
+        handler: SslErrorHandler?,
+        error: SslError?
+    ) {
+        error?.let {
+            val url = URL(error.url)
+            if (url.host in sslBypassHosts) handler?.proceed() else handler?.cancel()
+        }
+
+        handler?.proceed()
+    }
+
+    override fun onPageFinished(view: WebView?, url: String?) {
+        super.onPageFinished(view, url)
+
+        userScripts.forEach {
+            view?.evaluateJavascript(
+                it, null
+            )
+        }
+    }
+}

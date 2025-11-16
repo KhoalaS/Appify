@@ -1,0 +1,61 @@
+package {{ .PackageName }}.components
+
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.os.Bundle
+import android.webkit.WebView
+import androidx.activity.compose.BackHandler
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.viewinterop.AndroidView
+import {{ .PackageName }}.CustomWebViewClient
+import {{ .PackageName }}.viewmodels.WebViewModel
+
+
+@SuppressLint("SetJavaScriptEnabled")
+@Composable
+fun InternalWebView(url: String, viewModel: WebViewModel, modifier: Modifier) {
+    val context = LocalContext.current
+    val webView = remember {
+        WebView(context).apply {
+            settings.javaScriptEnabled = true
+            settings.userAgentString = {{ .UserAgentString }}
+            settings.domStorageEnabled = true
+            webViewClient = CustomWebViewClient(context.applicationContext)
+        }
+    }
+
+    // Restore state if available
+    LaunchedEffect(Unit) {
+        viewModel.webViewState?.let { webView.restoreState(it) }
+            ?: webView.loadUrl(url)
+    }
+
+    // Handle back presses
+    BackHandler(enabled = true) {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            // Let the system handle back (exit screen)
+            (context as? Activity)?.finish()
+        }
+    }
+
+    // Save state when the composable leaves
+    DisposableEffect(Unit) {
+        onDispose {
+            val bundle = Bundle()
+            webView.saveState(bundle)
+            viewModel.webViewState = bundle
+        }
+    }
+
+    AndroidView(
+        factory = { webView },
+        modifier = modifier
+    )
+}

@@ -1,0 +1,12 @@
+package {{ .PackageName }}.provider
+
+import okhttp3.OkHttpClient
+
+object OkHttpProvider {
+    val client: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .followRedirects(true)
+            .followSslRedirects(true)
+            .build()
+    }
+}

@@ -1,0 +1,13 @@
+package {{ .PackageName }}.screens
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import {{ .PackageName }}.components.InternalWebView
+import {{ .PackageName }}.viewmodels.WebViewModel
+
+@Composable
+fun WebViewScreen(url: String, viewModel: WebViewModel = viewModel(), modifier: Modifier
+) {
+    InternalWebView(url, viewModel, modifier)
+}
