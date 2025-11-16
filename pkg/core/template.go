@@ -7,8 +7,6 @@ import (
 	"path/filepath"
 	"strings"
 	"text/template"
-
-	appify "github.com/KhoalaS/Appify"
 )
 
 var appCodeTemplates = []string{
@@ -30,7 +28,7 @@ var projectFileTemplates = []string{
 	"app/build.gradle.kts.tmpl",
 }
 
-func RenderTemplate(config ProjectConfiguration, source fs.FS) error {
+func RenderTemplate(config ProjectConfiguration, source fs.FS, appCodeFolder fs.FS) error {
 	templateConfig, err := config.ToTemplateConfig()
 	if err != nil {
 		return err
@@ -57,7 +55,7 @@ func RenderTemplate(config ProjectConfiguration, source fs.FS) error {
 		ExecuteTemplateWithCleanup(templatefilePath, outfilePath, *templateConfig)
 	}
 
-	err = os.CopyFS(tempDir, appify.AppCodeFolder)
+	err = os.CopyFS(tempDir, appCodeFolder)
 	if err != nil {
 		return err
 	}

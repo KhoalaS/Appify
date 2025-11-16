@@ -1,4 +1,4 @@
-package appify
+package embeds
 
 import "embed"
 
