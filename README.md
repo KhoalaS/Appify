@@ -12,6 +12,14 @@ go build -o=build/appify main.go
 
 ## Usage
 
+Generate a example config and userscripts:
+
+```bash
+appify scaffold
+```
+
+Generate a project:
+
 ```bash
 appify generate -c ./config.json
 ```
