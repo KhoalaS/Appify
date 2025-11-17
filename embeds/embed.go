@@ -9,3 +9,8 @@ var TemplateFolder embed.FS
 
 //go:embed app
 var AppCodeFolder embed.FS
+
+//go:embed userscripts
+//go:embed config.json
+//go:embed config.schema.json
+var ExampleFiles embed.FS
