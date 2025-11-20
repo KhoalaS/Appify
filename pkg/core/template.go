@@ -83,6 +83,11 @@ func RenderTemplate(config ProjectConfiguration, source fs.FS, appCodeFolder fs.
 	}
 
 	for _, scriptFile := range scriptFiles {
+		ext := filepath.Ext(scriptFile.Name())
+		if ext != "js" {
+			continue
+		}
+
 		err = CopyFile(
 			filepath.Join(config.OnloadScripts, scriptFile.Name()),
 			filepath.Join(tempDir, "template/app/src/main/assets", scriptFile.Name()),

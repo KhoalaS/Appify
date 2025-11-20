@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -58,6 +59,10 @@ func (config *ProjectConfiguration) ToTemplateConfig() (*TemplateProjectConfigur
 	scriptNames := []string{}
 
 	for _, file := range scriptFiles {
+		ext := filepath.Ext(file.Name())
+		if ext != "js" {
+			continue
+		}
 		scriptNames = append(scriptNames, file.Name())
 	}
 
