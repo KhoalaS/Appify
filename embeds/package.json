@@ -1,0 +1,6 @@
+{
+    "name": "@debug/scaffold-helper",
+    "scripts": {
+        "build": "tsc --project tsconfig.json"
+    }
+}

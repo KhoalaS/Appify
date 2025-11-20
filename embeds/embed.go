@@ -14,3 +14,8 @@ var AppCodeFolder embed.FS
 //go:embed config.json
 //go:embed config.schema.json
 var ExampleFiles embed.FS
+
+//go:embed env.d.ts
+//go:embed package.json
+//go:embed tsconfig.json
+var TypescriptFiles embed.FS

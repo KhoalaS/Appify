@@ -1,0 +1,8 @@
+{
+  "include": ["userscripts/**.ts", "src/**.ts", "env.d.ts"],
+  "compilerOptions": {
+    "allowJs": true,
+    "target": "esnext",
+    "skipLibCheck": true
+  }
+}
