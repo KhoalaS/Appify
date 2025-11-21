@@ -27,5 +27,5 @@ var ScaffoldCmd = &cobra.Command{
 }
 
 func init() {
-	ScaffoldCmd.Flags().BoolVarP(&withTypescript, "typescript", "ts", false, "Add Typescript support")
+	ScaffoldCmd.Flags().BoolVarP(&withTypescript, "typescript", "t", false, "Add Typescript support")
 }
