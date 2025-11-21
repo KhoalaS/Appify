@@ -15,7 +15,7 @@ go build -o=build/appify main.go
 Generate a example config and userscripts:
 
 ```bash
-appify scaffold
+appify scaffold [--typescript]
 ```
 
 Generate a project:
@@ -39,3 +39,8 @@ Example config:
   "projectDirectory": "./myapp-appify"
 }
 ```
+
+## TODO
+
+- Auto build + install for Android projects.
+- Watch mode that copies userscripts into project
