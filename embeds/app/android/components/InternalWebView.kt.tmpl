@@ -25,7 +25,7 @@ fun InternalWebView(url: String, viewModel: WebViewModel, modifier: Modifier) {
             settings.javaScriptEnabled = true
             settings.userAgentString = {{ .UserAgentString }}
             settings.domStorageEnabled = true
-            webViewClient = CustomWebViewClient(context.applicationContext)
+            webViewClient = CustomWebViewClient(context)
         }
     }
     webView.addJavascriptInterface(WebAppImpl(context), "Android")
