@@ -19,6 +19,8 @@ var appCodeTemplates = []string{
 	"android/MainActivity.kt.tmpl",
 	"android/components/InternalWebView.kt.tmpl",
 	"android/viewmodels/WebViewModel.kt.tmpl",
+	"android/bridge/WebApp.kt.tmpl",
+	"android/bridge/WebAppImpl.kt.tmpl",
 }
 
 var projectFileTemplates = []string{
@@ -84,7 +86,7 @@ func RenderTemplate(config ProjectConfiguration, source fs.FS, appCodeFolder fs.
 
 	for _, scriptFile := range scriptFiles {
 		ext := filepath.Ext(scriptFile.Name())
-		if ext != "js" {
+		if ext != ".js" {
 			continue
 		}
 

@@ -60,7 +60,7 @@ func (config *ProjectConfiguration) ToTemplateConfig() (*TemplateProjectConfigur
 
 	for _, file := range scriptFiles {
 		ext := filepath.Ext(file.Name())
-		if ext != "js" {
+		if ext != ".js" {
 			continue
 		}
 		scriptNames = append(scriptNames, file.Name())
