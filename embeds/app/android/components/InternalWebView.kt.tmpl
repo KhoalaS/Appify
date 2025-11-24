@@ -28,6 +28,7 @@ fun InternalWebView(url: String, viewModel: WebViewModel, modifier: Modifier) {
             webViewClient = CustomWebViewClient(context.applicationContext)
         }
     }
+    webView.addJavascriptInterface(WebAppImpl(context), "Android")
 
     // Restore state if available
     LaunchedEffect(Unit) {
