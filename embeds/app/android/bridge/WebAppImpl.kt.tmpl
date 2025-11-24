@@ -1,0 +1,18 @@
+package {{ .PackageName }}.bridge
+
+import android.content.Context
+import android.webkit.JavascriptInterface
+import android.widget.Toast
+
+class WebAppImpl(private val context: Context) : WebApp {
+
+    @JavascriptInterface
+    override fun showToast(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    @JavascriptInterface
+    override fun saveFile(filename: String, content: String) {
+        TODO("Not yet implemented")
+    }
+}
