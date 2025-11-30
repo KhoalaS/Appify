@@ -59,5 +59,5 @@ var BuildCmd = &cobra.Command{
 
 func init() {
 	BuildCmd.Flags().StringVarP(&configPath, "config", "c", "./config.json", "The path to the project configuration.")
-	BuildCmd.Flags().VarP(&appVariant, "type", "t", `The app variant, either "release" or "debug". Default is "debug"`)
+	BuildCmd.Flags().VarP(&appVariant, "type", "t", `The app variant, either "release" or "debug".`)
 }
