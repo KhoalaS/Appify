@@ -24,6 +24,12 @@ Generate a project:
 appify generate -c ./config.json
 ```
 
+Build and install the app:
+
+```bash
+appify build -c ./config.json [--type "release"|"debug"]
+```
+
 Example config:
 
 ```json
