@@ -47,6 +47,16 @@ func RenderTemplate(config ProjectConfiguration, source fs.FS, appCodeFolder fs.
 		return err
 	}
 
+	err = os.Chmod(filepath.Join(tempDir, "template", "gradlew"), 0764)
+	if err != nil {
+		return err
+	}
+
+	err = os.Chmod(filepath.Join(tempDir, "template", "gradlew.bat"), 0764)
+	if err != nil {
+		return err
+	}
+
 	packagePath := strings.ReplaceAll(config.PackageName, ".", "/")
 	fullPackagePath := filepath.Join(tempDir, "template/app/src/main/java", packagePath)
 
