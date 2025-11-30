@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/KhoalaS/Appify/appify/cmd/build"
 	"github.com/KhoalaS/Appify/appify/cmd/generate"
 	"github.com/KhoalaS/Appify/appify/cmd/scaffold"
 	"github.com/spf13/cobra"
@@ -27,4 +28,5 @@ func Execute() {
 func init() {
 	rootCmd.AddCommand(generate.GenerateCmd)
 	rootCmd.AddCommand(scaffold.ScaffoldCmd)
+	rootCmd.AddCommand(build.BuildCmd)
 }
