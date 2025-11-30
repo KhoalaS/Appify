@@ -42,5 +42,4 @@ Example config:
 
 ## TODO
 
-- Auto build + install for Android projects.
 - Watch mode that copies userscripts into project
