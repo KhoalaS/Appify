@@ -19,6 +19,7 @@ type ProjectConfiguration struct {
 	Globals          string   `json:"globals"`
 	OnloadScripts    string   `json:"onloadScripts"`
 	ProjectDirectory string   `json:"projectDirectory"`
+	AppIcon          string   `json:"appIcon"`
 }
 
 type TemplateProjectConfiguration struct {

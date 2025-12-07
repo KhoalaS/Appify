@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"io"
 	"io/fs"
 	"os"
@@ -42,9 +43,15 @@ func RenderTemplate(config ProjectConfiguration, source fs.FS, appCodeFolder fs.
 	}
 
 	err = os.CopyFS(tempDir, source)
-
 	if err != nil {
 		return err
+	}
+
+	if config.AppIcon != "" {
+		err := RenderAppIcon(tempDir, &config)
+		if err != nil {
+			return err
+		}
 	}
 
 	err = os.Chmod(filepath.Join(tempDir, "template", "gradlew"), 0764)
@@ -162,6 +169,39 @@ func ExecuteTemplateWithCleanup(inputfilePath string, outfilePath string, templa
 	err = os.Remove(inputfilePath)
 	if err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func RenderAppIcon(tempFolder string, config *ProjectConfiguration) error {
+	icon, err := ReadPngImage(config.AppIcon)
+	if err != nil {
+		return err
+	}
+
+	resFolder := filepath.Join(tempFolder, "template", "app", "src", "main", "res")
+
+	anyDpiFolder := filepath.Join(resFolder, "mipmap-anydpi")
+	os.RemoveAll(anyDpiFolder)
+
+	resolutions := map[string]int{
+		"mdpi":    48,
+		"hdpi":    72,
+		"xhdpi":   96,
+		"xxhdpi":  144,
+		"xxxhdpi": 192,
+	}
+
+	for resKey, resolution := range resolutions {
+		iconFolder := filepath.Join(resFolder, fmt.Sprintf("mipmap-%s", resKey))
+		os.RemoveAll(iconFolder)
+		os.MkdirAll(iconFolder, 0775)
+		scaledImage := ScalePngImage(icon, resolution)
+		WriteImage(scaledImage, filepath.Join(iconFolder, "ic_launcher.png"))
+
+		roundImage := CircleCrop(scaledImage)
+		WriteImage(roundImage, filepath.Join(iconFolder, "ic_launcher_round.png"))
 	}
 
 	return nil

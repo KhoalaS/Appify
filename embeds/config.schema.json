@@ -46,6 +46,10 @@
         "projectDirectory": {
             "type": "string",
             "description": "The path to the project directory."
+        },
+        "appIcon": {
+            "type": "string",
+            "description": "The path to a PNG image used as the app icon."
         }
     }
 }
