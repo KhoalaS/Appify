@@ -46,6 +46,22 @@ Example config:
 }
 ```
 
+## Extending Websites
+
+You can "extend" a website by defining your own endpoints.
+
+Change this in the `InternalWebView.kt`
+
+```kotlin
+CustomWebViewClient(context, insets, density, layoutDirection).apply {
+  registerCustomEndpoint("/mypage", "mypage-index.html")
+}
+```
+
+`mypage-index.html` should be placed in the app's `assets` folder.
+Requests with a path starting with `/mypage` will be served the defined HTML file.
+This file can be a whole SPA with client-side routing, in which case the entry point for the app should be wrapped in an HTML structure resembling the original website.
+
 ## TODO
 
 - Watch mode that copies userscripts into project
