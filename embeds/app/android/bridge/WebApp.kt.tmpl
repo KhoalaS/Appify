@@ -3,4 +3,5 @@ package {{ .PackageName }}.bridge
 interface WebApp {
     fun showToast(message: String)
     fun saveFile(filename: String, content: String)
+    fun base64EncodeResponseToDataUrl(url: String): String
 }

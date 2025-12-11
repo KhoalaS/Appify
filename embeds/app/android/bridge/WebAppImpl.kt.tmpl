@@ -15,4 +15,21 @@ class WebAppImpl(private val context: Context) : WebApp {
     override fun saveFile(filename: String, content: String) {
         TODO("Not yet implemented")
     }
+
+    @JavascriptInterface
+    override fun base64EncodeResponseToDataUrl(url: String): String {
+        val request = Request.Builder().url(url).build()
+        val response = OkHttpProvider.client.newCall(request).execute()
+
+        val contentType = response.headers.get("content-type") ?: "application/octet-stream"
+
+        val bodyBytes = response.body?.bytes() ?: ByteArray(0)
+        val encodedResponse = base64Encode(bodyBytes)
+
+        return "data:${contentType};base64,${encodedResponse}"
+    }
+
+    private fun base64Encode(input: ByteArray): String {
+        return Base64.getEncoder().encodeToString(input)
+    }
 }
