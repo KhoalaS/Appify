@@ -21,6 +21,7 @@ class CustomWebViewClient(private val context: Context) : WebViewClient() {
         }
     }
     private val sslBypassHosts = listOf({{ .SslBypass }})
+    private val internalRedirect = mutableMapOf<String, String>()
 
     override fun shouldInterceptRequest(
         view: WebView?,
@@ -28,6 +29,10 @@ class CustomWebViewClient(private val context: Context) : WebViewClient() {
     ): WebResourceResponse? {
         if (request.url.host in blockList) {
             return blockedResponse()
+        }
+
+        internalRedirect[request.url.path]?.let { assetPath ->
+            return responseFromHtmlAsset(assetPath)
         }
 
         if (!request.isForMainFrame)
@@ -125,5 +130,20 @@ class CustomWebViewClient(private val context: Context) : WebViewClient() {
                 it, null
             )
         }
+    }
+
+    fun registerCustomEndpoint(endpoint: String, assetPath: String) {
+        internalRedirect[endpoint] = assetPath
+    }
+
+    fun responseFromHtmlAsset(asssetPath: String): WebResourceResponse {
+        return  WebResourceResponse(
+            "text/html",
+            "utf-8",
+            200,
+            "OK",
+            null,
+            context.assets.open(asssetPath)
+        )
     }
 }
