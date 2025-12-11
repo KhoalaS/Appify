@@ -31,8 +31,14 @@ class CustomWebViewClient(private val context: Context) : WebViewClient() {
             return blockedResponse()
         }
 
-        internalRedirect[request.url.path]?.let { assetPath ->
-            return responseFromHtmlAsset(assetPath)
+        val path = request.url.path
+
+        path?.let{
+            internalRedirect.entries.firstOrNull { (key, _) ->
+                path.startsWith(key)
+            }?.let { (_, assetPath) ->
+                return responseFromHtmlAsset(assetPath)
+            }
         }
 
         if (!request.isForMainFrame)
