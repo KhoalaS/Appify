@@ -1,0 +1,11 @@
+{
+  "include": ["./src/**/*.ts"],
+  "compilerOptions": {
+    "target": "es2021",
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}

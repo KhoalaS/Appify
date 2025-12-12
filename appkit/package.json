@@ -1,0 +1,10 @@
+{
+    "name": "@debug/appkit",
+    "type": "module",
+    "scripts": {
+        "build": "tsc --project tsconfig.lib.json"
+    },
+    "devDependencies": {
+        "typescript": "5.9.3"
+    }
+}

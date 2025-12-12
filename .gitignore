@@ -2,3 +2,5 @@ __test__
 build
 test-appify
 !appify/cmd/build
+node_modules
+dist
